@@ -31,6 +31,11 @@ def delete_student(db: Session, student_id: int):
         db.commit()
     return db_student
 
+def delete_all_students(db: Session):
+    deleted_count = db.query(Student).delete()
+    db.commit()
+    return deleted_count
+
 def get_class_analytics(db: Session):
     students = get_students(db)
     if not students:

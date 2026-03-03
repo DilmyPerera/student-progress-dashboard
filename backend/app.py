@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from database import engine, Base
-from crud import get_students, create_student, update_student, delete_student, get_class_analytics, get_student
+from crud import get_students, create_student, update_student, delete_student, delete_all_students, get_class_analytics, get_student
 from database import SessionLocal
 import pandas as pd
 
@@ -40,6 +40,13 @@ def add_student():
     student = create_student(db, data)
     db.close()
     return jsonify(serialize_student(student))
+
+@app.route('/students/', methods=['DELETE'])
+def remove_all_students():
+    db = SessionLocal()
+    deleted_count = delete_all_students(db)
+    db.close()
+    return jsonify({"message": f"Deleted {deleted_count} students"})
 
 @app.route('/students/<int:student_id>', methods=['GET'])
 def read_student(student_id):
