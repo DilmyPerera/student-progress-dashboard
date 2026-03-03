@@ -250,9 +250,18 @@ function Dashboard({ theme, onThemeToggle }) {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <input name="name" value={newStudent.name} placeholder="Name" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
               <input name="gender" value={newStudent.gender} placeholder="Gender" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="math_score" value={newStudent.math_score} type="number" placeholder="Math Score" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="reading_score" value={newStudent.reading_score} type="number" placeholder="Reading Score" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="writing_score" value={newStudent.writing_score} type="number" placeholder="Writing Score" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 sm:col-span-2" />
+              <label className="space-y-1">
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Math Score</span>
+                <input name="math_score" value={newStudent.math_score} type="number" placeholder="Math Score" onChange={handleInputChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
+              </label>
+              <label className="space-y-1">
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Reading Score</span>
+                <input name="reading_score" value={newStudent.reading_score} type="number" placeholder="Reading Score" onChange={handleInputChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
+              </label>
+              <label className="space-y-1 sm:col-span-2">
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Writing Score</span>
+                <input name="writing_score" value={newStudent.writing_score} type="number" placeholder="Writing Score" onChange={handleInputChange} className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
+              </label>
             </div>
             <button
               onClick={handleAddStudent}
