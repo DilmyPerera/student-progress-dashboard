@@ -46,6 +46,7 @@ function Dashboard({ theme, onThemeToggle }) {
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [newStudent, setNewStudent] = useState({
     name: '', gender: '', race_ethnicity: '', parental_education: '', lunch: '', test_preparation: '',
@@ -148,6 +149,30 @@ function Dashboard({ theme, onThemeToggle }) {
     axios.delete(`${API_BASE}/students/${id}`).then(fetchData);
   };
 
+  const handleClearAll = async () => {
+    if (!students.length) {
+      setStatus({ type: 'error', message: 'No student records to clear.' });
+      return;
+    }
+
+    const confirmed = window.confirm('Are you sure you want to delete all student records? This cannot be undone.');
+    if (!confirmed) {
+      return;
+    }
+
+    setIsClearing(true);
+    setStatus({ type: '', message: '' });
+    try {
+      const response = await axios.delete(`${API_BASE}/students/`);
+      await fetchData();
+      setStatus({ type: 'success', message: response.data?.message || 'All student records cleared.' });
+    } catch (error) {
+      setStatus({ type: 'error', message: error.response?.data?.error || 'Failed to clear student records.' });
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
   const subjectChartData = {
     labels: ['Math', 'Reading', 'Writing'],
     datasets: [{
@@ -179,8 +204,8 @@ function Dashboard({ theme, onThemeToggle }) {
 
         {status.message && (
           <div className={`rounded-xl border px-4 py-3 text-sm ${status.type === 'error'
-              ? 'border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/50 dark:text-red-300'
-              : 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300'
+            ? 'border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/50 dark:text-red-300'
+            : 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/50 dark:text-emerald-300'
             }`}>
             {status.message}
           </div>
@@ -259,8 +284,15 @@ function Dashboard({ theme, onThemeToggle }) {
         </div>
 
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Students List</h2>
+            <button
+              onClick={handleClearAll}
+              disabled={isClearing || students.length === 0}
+              className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isClearing ? 'Clearing...' : 'Clear All'}
+            </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left text-sm">
