@@ -10,6 +10,20 @@ CORS(app)
 
 Base.metadata.create_all(bind=engine)
 
+def serialize_student(student):
+    return {
+        "id": student.id,
+        "name": student.name,
+        "gender": student.gender,
+        "race_ethnicity": student.race_ethnicity,
+        "parental_education": student.parental_education,
+        "lunch": student.lunch,
+        "test_preparation": student.test_preparation,
+        "math_score": student.math_score,
+        "reading_score": student.reading_score,
+        "writing_score": student.writing_score,
+    }
+
 @app.route('/students/', methods=['GET'])
 def read_students():
     db = SessionLocal()
@@ -17,7 +31,7 @@ def read_students():
     limit = int(request.args.get('limit', 100))
     students = get_students(db, skip, limit)
     db.close()
-    return jsonify([s.__dict__ for s in students if s is not None])
+    return jsonify([serialize_student(s) for s in students if s is not None])
 
 @app.route('/students/', methods=['POST'])
 def add_student():
@@ -25,7 +39,7 @@ def add_student():
     data = request.json
     student = create_student(db, data)
     db.close()
-    return jsonify(student.__dict__)
+    return jsonify(serialize_student(student))
 
 @app.route('/students/<int:student_id>', methods=['GET'])
 def read_student(student_id):
@@ -33,7 +47,7 @@ def read_student(student_id):
     student = get_student(db, student_id)
     db.close()
     if student:
-        return jsonify(student.__dict__)
+        return jsonify(serialize_student(student))
     return jsonify({"error": "Student not found"}), 404
 
 @app.route('/students/<int:student_id>', methods=['PUT'])
@@ -43,7 +57,7 @@ def edit_student(student_id):
     student = update_student(db, student_id, data)
     db.close()
     if student:
-        return jsonify(student.__dict__)
+        return jsonify(serialize_student(student))
     return jsonify({"error": "Student not found"}), 404
 
 @app.route('/students/<int:student_id>', methods=['DELETE'])
