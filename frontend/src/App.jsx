@@ -49,7 +49,7 @@ function Dashboard({ theme, onThemeToggle }) {
   const [isClearing, setIsClearing] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [newStudent, setNewStudent] = useState({
-    name: '', gender: '', race_ethnicity: '', parental_education: '', lunch: '', test_preparation: '',
+    name: '', gender: '',
     math_score: 0, reading_score: 0, writing_score: 0
   });
 
@@ -114,8 +114,8 @@ function Dashboard({ theme, onThemeToggle }) {
     }
 
     const payload = {
-      ...newStudent,
       name: newStudent.name.trim(),
+      gender: newStudent.gender,
       math_score: Number(newStudent.math_score) || 0,
       reading_score: Number(newStudent.reading_score) || 0,
       writing_score: Number(newStudent.writing_score) || 0,
@@ -130,10 +130,6 @@ function Dashboard({ theme, onThemeToggle }) {
       setNewStudent({
         name: '',
         gender: '',
-        race_ethnicity: '',
-        parental_education: '',
-        lunch: '',
-        test_preparation: '',
         math_score: 0,
         reading_score: 0,
         writing_score: 0,
@@ -254,10 +250,6 @@ function Dashboard({ theme, onThemeToggle }) {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <input name="name" value={newStudent.name} placeholder="Name" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
               <input name="gender" value={newStudent.gender} placeholder="Gender" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="race_ethnicity" value={newStudent.race_ethnicity} placeholder="Race/Ethnicity" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="parental_education" value={newStudent.parental_education} placeholder="Parental Education" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="lunch" value={newStudent.lunch} placeholder="Lunch" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
-              <input name="test_preparation" value={newStudent.test_preparation} placeholder="Test Prep" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
               <input name="math_score" value={newStudent.math_score} type="number" placeholder="Math Score" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
               <input name="reading_score" value={newStudent.reading_score} type="number" placeholder="Reading Score" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />
               <input name="writing_score" value={newStudent.writing_score} type="number" placeholder="Writing Score" onChange={handleInputChange} className="rounded-xl border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 sm:col-span-2" />
